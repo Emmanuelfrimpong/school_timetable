@@ -17,13 +17,13 @@ class TeacherModelAdapter extends TypeAdapter<TeacherModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TeacherModel(
+      id: fields[0] as String?,
+      name: fields[1] as String?,
       subject: fields[2] as String?,
       classesName: (fields[3] as List?)?.cast<dynamic>(),
       classesCode: (fields[4] as List?)?.cast<dynamic>(),
       createdAt: fields[5] as int?,
-    )
-      ..id = fields[0] as String?
-      ..name = fields[1] as String?;
+    );
   }
 
   @override

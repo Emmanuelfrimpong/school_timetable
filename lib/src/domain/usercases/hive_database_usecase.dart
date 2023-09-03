@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:school_timetable/src/data/models/classes/classes_model.dart';
+import 'package:school_timetable/src/data/models/tables/table_model.dart';
 import 'package:school_timetable/src/data/models/teachers/teacher_model.dart';
 import 'package:school_timetable/src/domain/repos/hive_database_repo.dart';
 
@@ -72,8 +73,10 @@ class HiveDatabaseUseCase extends HiveDatabaseRepo{
     await Hive.initFlutter(path);
     Hive.registerAdapter(TeacherModelAdapter());
     Hive.registerAdapter(ClassesModelAdapter());
+    Hive.registerAdapter(TableModelAdapter());
     await Hive.openBox<TeacherModel>('teachers');
     await Hive.openBox<ClassesModel>('classes');
+    await Hive.openBox<TableModel>('tables');
 
   }
 

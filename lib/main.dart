@@ -15,7 +15,8 @@ void main() async{
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(800, 600),
+    size: Size(950, 600),
+    minimumSize: Size(950, 600),
     center: true,
     backgroundColor: Colors.transparent,
     skipTaskbar: false,
@@ -28,13 +29,13 @@ void main() async{
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   final OnStartUpUseCase onStartUpUseCase = OnStartUpUseCase();
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       ),
       builder: FlutterSmartDialog.init(),
       home: FutureBuilder(
-          future: onStartUpUseCase.init(),
+          future: onStartUpUseCase.init(ref),
           builder: (context, snapshot) {
             return const MainPage();
           }),

@@ -19,7 +19,7 @@ class ClassesModelAdapter extends TypeAdapter<ClassesModel> {
     return ClassesModel(
       id: fields[0] as String?,
       className: fields[1] as String?,
-      courses: fields[2] as String?,
+      course: fields[2] as String?,
       subjects: (fields[3] as List?)?.cast<dynamic>(),
       createdAt: fields[4] as int?,
       classCode: fields[5] as String?,
@@ -35,7 +35,7 @@ class ClassesModelAdapter extends TypeAdapter<ClassesModel> {
       ..writeByte(1)
       ..write(obj.className)
       ..writeByte(2)
-      ..write(obj.courses)
+      ..write(obj.course)
       ..writeByte(3)
       ..write(obj.subjects)
       ..writeByte(4)
