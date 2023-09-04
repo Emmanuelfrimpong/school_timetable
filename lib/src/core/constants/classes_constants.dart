@@ -9,4 +9,4 @@ List<String> classesColumns = [
 
   ];
 
-  
+   List<String>days= ['Monday','Tuesday','Wednesday','Thursday','Friday'];

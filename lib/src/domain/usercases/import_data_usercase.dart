@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:open_app_file/open_app_file.dart';
 import 'package:school_timetable/src/data/models/classes/classes_model.dart';
+import 'package:school_timetable/src/data/models/period_model.dart';
 import 'package:school_timetable/src/data/models/teachers/teacher_model.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import '../../core/functions/excel_settings.dart';
@@ -102,12 +103,14 @@ class ImportDataUseCase extends ImportDataRepo {
       var rows = data.tables[data.getDefaultSheet()]!.rows;
       //remove header row
       List<ClassesModel> classes = rows.skip(2).map<ClassesModel>((row) {
+        var subjects = row[3]!.value.toString().split(',');
+         subjects.addAll(['Core Mathematics','English Language','Integrated Science','Social Studies']);
         return ClassesModel(
           id: row[0].toString().toLowerCase().trim().hashCode.toString(),
           classCode: row[0]!.value.toString(),
           className: row[1]!.value.toString(),
           course: row[2]!.value.toString(),
-          subjects: row[3]!.value.toString().split(','),
+          subjects: subjects,
           createdAt: DateTime.now().millisecondsSinceEpoch,
         );
       }).toList();
@@ -129,8 +132,8 @@ class ImportDataUseCase extends ImportDataRepo {
       List<TeacherModel> teachers = rows
           .skip(2)
           .map<TeacherModel>((row) {
-            var subjects=row[2]!.value.toString().split(',');
-            subjects.addAll(['Core Mathematics','English Language','Integrated Science','Social Studies']);
+            var classes=row[2]!.value.toString().split(',');
+           
             return TeacherModel(
               id: row[0]!
                   .value
@@ -141,7 +144,7 @@ class ImportDataUseCase extends ImportDataRepo {
                   .toString(),
               name: row[0]!.value.toString(),
               subject: row[1]!.value.toString(),
-              classesCode: subjects,
+              classesCode: classes,
               classesName: [],
               createdAt: DateTime.now().millisecondsSinceEpoch,
             );
@@ -394,5 +397,28 @@ class ImportDataUseCase extends ImportDataRepo {
     }catch(e){
       return Future.value(Exception(e.toString()));
     }
+  }
+
+  @override
+  List<PeriodModel> getPeriods() {
+    try{
+      var box=Hive.box<PeriodModel>('periods');
+      return box.values.toList();
+    }catch(e){
+      return [];
+    }
+  }
+
+  @override
+  Future<Exception?> savePeriods(List<PeriodModel> periods) {
+   try{
+      var box=Hive.box<PeriodModel>('periods');
+      box.clear();
+      box.addAll(periods);
+      return Future.value(null);
+
+   }catch(e){
+     return Future.value(Exception(e.toString()));
+   }
   }
 }

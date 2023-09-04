@@ -1,29 +1,43 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'period_model.g.dart';
+@HiveType(typeId: 3)
 class PeriodModel {
+  @HiveField(0)
   int? period;
+  @HiveField(1)
   String? periodName;
+  @HiveField(2)
   String? startTime;
+  @HiveField(3)
   String? endTime;
+  @HiveField(4)
+  String? periodId;
   PeriodModel({
     this.period,
     this.periodName,
     this.startTime,
     this.endTime,
+    this.periodId,
   });
+ 
 
   PeriodModel copyWith({
     int? period,
     String? periodName,
     String? startTime,
     String? endTime,
+    String? periodId,
   }) {
     return PeriodModel(
       period: period ?? this.period,
       periodName: periodName ?? this.periodName,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
+      periodId: periodId ?? this.periodId,
     );
   }
 
@@ -33,6 +47,7 @@ class PeriodModel {
       'periodName': periodName,
       'startTime': startTime,
       'endTime': endTime,
+      'periodId': periodId,
     };
   }
 
@@ -42,6 +57,7 @@ class PeriodModel {
       periodName: map['periodName'] != null ? map['periodName'] as String : null,
       startTime: map['startTime'] != null ? map['startTime'] as String : null,
       endTime: map['endTime'] != null ? map['endTime'] as String : null,
+      periodId: map['periodId'] != null ? map['periodId'] as String : null,
     );
   }
 
@@ -51,7 +67,7 @@ class PeriodModel {
 
   @override
   String toString() {
-    return 'PeriodModel(period: $period, periodName: $periodName, startTime: $startTime, endTime: $endTime)';
+    return 'PeriodModel(period: $period, periodName: $periodName, startTime: $startTime, endTime: $endTime, periodId: $periodId)';
   }
 
   @override
@@ -62,7 +78,8 @@ class PeriodModel {
       other.period == period &&
       other.periodName == periodName &&
       other.startTime == startTime &&
-      other.endTime == endTime;
+      other.endTime == endTime &&
+      other.periodId == periodId;
   }
 
   @override
@@ -70,6 +87,7 @@ class PeriodModel {
     return period.hashCode ^
       periodName.hashCode ^
       startTime.hashCode ^
-      endTime.hashCode;
+      endTime.hashCode ^
+      periodId.hashCode;
   }
 }

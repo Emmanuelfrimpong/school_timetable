@@ -1,9 +1,11 @@
-import 'dart:io';
+
 
 import 'package:excel/excel.dart';
 import 'package:school_timetable/src/data/models/classes/classes_model.dart';
 import 'package:school_timetable/src/data/models/tables/table_model.dart';
 import 'package:school_timetable/src/data/models/teachers/teacher_model.dart';
+
+import '../../data/models/period_model.dart';
 
 abstract class ImportDataRepo {
   Future<(Exception?, String?)> pickExcelFIle();
@@ -44,5 +46,10 @@ abstract class ImportDataRepo {
 
     //clear tables
     Future<Exception?> clearTables();
+
+    //save periods 
+    Future<Exception?> savePeriods(List<PeriodModel> periods);
+    //get periods
+    List<PeriodModel> getPeriods();
 }
    
