@@ -35,9 +35,7 @@ class _MainPageState extends ConsumerState<MainPage>with WindowListener {
   }
 
   void _init() async {
-    // Add this line to override the default close handler
-    await windowManager.setPreventClose(true);
-    setState(() {});
+
   }
   @override
   Widget build(BuildContext context) {
