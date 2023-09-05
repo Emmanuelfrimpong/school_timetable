@@ -142,29 +142,18 @@ class TableListNotifier extends StateNotifier<List<TableModel>> {
     //check and avoid same class having more than one subject at the same time
     List<TableModel> tables = [];
     // group TCSP by classId
-    var groupedTCSP = groupBy(tcsp, (obj) => obj.classId);
-    Random random = Random();
-    var element=groupedTCSP.keys.elementAt(0);
-    if (element == null) {
-      var pdpList = pdp;
-      pdpList.shuffle(random);
-      List<ClassTecherSubjectModel> classList = groupedTCSP['$element']!;
+  
       // randomly a classList to pdp
       // check if the teacher is not teaching another class at the same time else get  another pdp
       // check if the class is not having another subject at the same time else get another pdp
       // if both are true then add to table
-      for (var item in classList) {
-        var existenTable = tables.where(
-            (tab) => element == tab.classId || item.teacherId == tab.teacherId);
-        for (var pdpItem in pdpList) {
-          var usedPeriod = existenTable.where(
-              (tab) => pdpItem.period == tab.period && pdpItem.day == tab.day);
-          if (usedPeriod.isEmpty) {
+      for (var item in tcsp) {
+        for (var pdpItem in pdp) {
             tables.add(TableModel(
-              id: '${element}_${item.teacherId}_${pdpItem.period}_${pdpItem.day}'
+              id: '${item.teacherId}_${pdpItem.period}_${pdpItem.day}'
                   .hashCode
                   .toString(),
-              classId: element,
+              classId: item.classId,
               subject: item.subjectName,
               className: item.className,
               programme: '',
@@ -182,17 +171,15 @@ class TableListNotifier extends StateNotifier<List<TableModel>> {
               },
             ));
             //remove the pdp from the list
-            pdpList.remove(pdpItem);
+            //pdpList.remove(pdpItem);
             break;
-          }else{
-            //remove the pdp from the list
-            pdpList.remove(pdpItem);
-          }
+          
         }
         
       }
 
-    }
+    
+    
     return tables;
   }
 }

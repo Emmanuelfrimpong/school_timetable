@@ -381,6 +381,7 @@ class ImportDataUseCase extends ImportDataRepo {
   List<TableModel> getTables() {
    try{
       var box=Hive.box<TableModel>('tables');
+      print(box.values.toList().length);
       return box.values.toList();
    }catch(e){
      return [];
