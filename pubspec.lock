@@ -691,34 +691,62 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
+<<<<<<< HEAD
       sha256: "9f0a4593f7642b2f106e329734d0e5fc746baf8d0a59495eec586cd0d9ba7d02"
       url: "https://pub.dev"
     source: hosted
     version: "22.2.12"
+=======
+      sha256: "2baf60cd245a21a7069f036bbca1ca222633d38f57748e133da97a305712627c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.11"
+>>>>>>> eec430a7daf336a51e6d33d1da81d0f3972cbf5a
   syncfusion_flutter_pdf:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_pdf
+<<<<<<< HEAD
       sha256: "05d1a6cde581504cf1e86307fe308a6d1433903677b604d006ed67ef19a4fbc6"
       url: "https://pub.dev"
     source: hosted
     version: "22.2.12"
+=======
+      sha256: "40a72eb7c897650ffddf64b855752fa66b1f19d17c3d760238fb8489ee27ad65"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.11"
+>>>>>>> eec430a7daf336a51e6d33d1da81d0f3972cbf5a
   syncfusion_flutter_xlsio:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_xlsio
+<<<<<<< HEAD
       sha256: "66b009fce91e10cfa5d9b3cdf2c4aa3fdf7430dab159626f4c67297638da2caf"
       url: "https://pub.dev"
     source: hosted
     version: "22.2.12"
+=======
+      sha256: "4fc5f69cfb0f84ef10079eb1e98fb642e41defeabc8863ee4cf2e3d0333db679"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.11"
+>>>>>>> eec430a7daf336a51e6d33d1da81d0f3972cbf5a
   syncfusion_officecore:
     dependency: transitive
     description:
       name: syncfusion_officecore
+<<<<<<< HEAD
       sha256: "66d0a0faba40f043bba4ef102474213d3145ffeca2b3f2351a98c0cc10079c27"
       url: "https://pub.dev"
     source: hosted
     version: "22.2.12"
+=======
+      sha256: "3d2c37877801c422c33c0bc8ba7b8bec7396016a71cfa3707958e9fc65c3705d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.11"
+>>>>>>> eec430a7daf336a51e6d33d1da81d0f3972cbf5a
   term_glyph:
     dependency: transitive
     description:
