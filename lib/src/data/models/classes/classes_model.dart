@@ -15,7 +15,7 @@ class ClassesModel {
   @HiveField(1)
   String? className;
   @HiveField(2)
-  String? courses;
+  String? course;
   @HiveField(3)
   List<dynamic>? subjects;
   @HiveField(4)
@@ -25,7 +25,7 @@ class ClassesModel {
   ClassesModel({
     this.id,
     this.className,
-    this.courses,
+    this.course,
     this.subjects,
     this.createdAt,
     this.classCode,
@@ -42,7 +42,7 @@ class ClassesModel {
     return ClassesModel(
       id: id ?? this.id,
       className: className ?? this.className,
-      courses: courses ?? this.courses,
+      course: courses ?? this.course,
       subjects: subjects ?? this.subjects,
       createdAt: createdAt ?? this.createdAt,
       classCode: classCode ?? this.classCode,
@@ -53,7 +53,7 @@ class ClassesModel {
     return <String, dynamic>{
       'id': id,
       'className': className,
-      'courses': courses,
+      'courses': course,
       'subjects': subjects,
       'createdAt': createdAt,
       'classCode': classCode,
@@ -64,7 +64,7 @@ class ClassesModel {
     return ClassesModel(
       id: map['id'] != null ? map['id'] as String : null,
       className: map['className'] != null ? map['className'] as String : null,
-      courses: map['courses'] != null ? map['courses'] as String : null,
+      course: map['courses'] != null ? map['courses'] as String : null,
       subjects: map['subjects'] != null ? List<dynamic>.from((map['subjects'] as List<dynamic>)) : null,
       createdAt: map['createdAt'] != null ? map['createdAt'] as int : null,
       classCode: map['classCode'] != null ? map['classCode'] as String : null,
@@ -77,7 +77,7 @@ class ClassesModel {
 
   @override
   String toString() {
-    return 'ClassesModel(id: $id, className: $className, courses: $courses, subjects: $subjects, createdAt: $createdAt, classCode: $classCode)';
+    return 'ClassesModel(id: $id, className: $className, courses: $course, subjects: $subjects, createdAt: $createdAt, classCode: $classCode)';
   }
 
   @override
@@ -87,7 +87,7 @@ class ClassesModel {
     return 
       other.id == id &&
       other.className == className &&
-      other.courses == courses &&
+      other.course == course &&
       listEquals(other.subjects, subjects) &&
       other.createdAt == createdAt &&
       other.classCode == classCode;
@@ -97,7 +97,7 @@ class ClassesModel {
   int get hashCode {
     return id.hashCode ^
       className.hashCode ^
-      courses.hashCode ^
+      course.hashCode ^
       subjects.hashCode ^
       createdAt.hashCode ^
       classCode.hashCode;

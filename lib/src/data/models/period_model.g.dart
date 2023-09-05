@@ -1,47 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'classes_model.dart';
+part of 'period_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ClassesModelAdapter extends TypeAdapter<ClassesModel> {
+class PeriodModelAdapter extends TypeAdapter<PeriodModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 3;
 
   @override
-  ClassesModel read(BinaryReader reader) {
+  PeriodModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ClassesModel(
-      id: fields[0] as String?,
-      className: fields[1] as String?,
-      course: fields[2] as String?,
-      subjects: (fields[3] as List?)?.cast<dynamic>(),
-      createdAt: fields[4] as int?,
-      classCode: fields[5] as String?,
+    return PeriodModel(
+      period: fields[0] as int?,
+      periodName: fields[1] as String?,
+      startTime: fields[2] as String?,
+      endTime: fields[3] as String?,
+      periodId: fields[4] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ClassesModel obj) {
+  void write(BinaryWriter writer, PeriodModel obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.className)
-      ..writeByte(2)
-      ..write(obj.course)
-      ..writeByte(3)
-      ..write(obj.subjects)
-      ..writeByte(4)
-      ..write(obj.createdAt)
       ..writeByte(5)
-      ..write(obj.classCode);
+      ..writeByte(0)
+      ..write(obj.period)
+      ..writeByte(1)
+      ..write(obj.periodName)
+      ..writeByte(2)
+      ..write(obj.startTime)
+      ..writeByte(3)
+      ..write(obj.endTime)
+      ..writeByte(4)
+      ..write(obj.periodId);
   }
 
   @override
@@ -50,7 +47,7 @@ class ClassesModelAdapter extends TypeAdapter<ClassesModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ClassesModelAdapter &&
+      other is PeriodModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -22,6 +22,12 @@ dependencies:
   open_app_file: ^4.0.2
   flutter_riverpod: ^2.3.10
   riverpod: ^2.3.10
+  file_picker:
+    git:
+      url: https://github.com/Emmanuelfrimpong/flutter_file_picker.git
+  vs_scrollbar: ^0.2.1
+  syncfusion_flutter_xlsio: ^22.2.11
+  syncfusion_flutter_pdf: ^22.2.11
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:school_timetable/generated/assets.dart';
 import 'package:school_timetable/src/core/utils/colors.dart';
 import 'package:school_timetable/src/presentation/pages/classes_page.dart';
+import 'package:school_timetable/src/presentation/pages/table_page.dart';
+import 'package:school_timetable/src/presentation/pages/teachers_page.dart';
 import 'package:school_timetable/src/presentation/riverpod/navigation_services.dart';
 import 'package:school_timetable/src/presentation/riverpod/timer_services.dart';
 import 'package:window_manager/window_manager.dart';
@@ -104,7 +106,9 @@ class _MainPageState extends ConsumerState<MainPage>with WindowListener {
                     Expanded(child: IndexedStack(
                       index: pageIndexProvider,
                       children: const [
-                        ClassesPage()
+                        ClassesPage(),
+                        TeachersPage(),
+                        TablePage()
                       ],))
                 ]),
               ),
