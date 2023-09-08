@@ -309,13 +309,14 @@ class _TablePageState extends ConsumerState<TablePage> {
           return Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     'Tables'.toUpperCase(),
                     style:
                         kTitleTextStyle(size: 25, fontWeight: FontWeight.bold),
                   ),
+                  const Spacer(),
                   IconButton(
                       onPressed: () {
                         // warn user
@@ -331,6 +332,14 @@ class _TablePageState extends ConsumerState<TablePage> {
                         );
                       },
                       icon: const Icon(Icons.refresh)),
+                      ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                  ),
+                  onPressed: (){
+                    CustomDialog.showSuccess(title: 'Export to PDF', message: 'Unable to export to PDF, This feature is not yet available');
+                  }, child: const Text('Export to PDF', style: TextStyle(color: Colors.white),))
+                //time picker
                 ],
               ),
               Expanded(
@@ -488,7 +497,10 @@ class _TablePageState extends ConsumerState<TablePage> {
                       }
                     },
                     icon: const Icon(Icons.calendar_month)),
-                //time picker
+                const SizedBox(
+                  width: 25,
+                ),
+                
               ],
             ),
           ),
@@ -510,7 +522,6 @@ class TablesWidget extends StatelessWidget {
       child: Column(
         children: days.map((e) {
           var data1 = table.where((element) => element.day == e);
-
           if (data1.isEmpty) {
             return Container();
           }

@@ -3,6 +3,7 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:open_app_file/open_app_file.dart';
+import 'package:school_timetable/src/core/constants/additional_subjects.dart';
 import 'package:school_timetable/src/data/models/classes/classes_model.dart';
 import 'package:school_timetable/src/data/models/period_model.dart';
 import 'package:school_timetable/src/data/models/teachers/teacher_model.dart';
@@ -104,7 +105,7 @@ class ImportDataUseCase extends ImportDataRepo {
       //remove header row
       List<ClassesModel> classes = rows.skip(2).map<ClassesModel>((row) {
         var subjects = row[3]!.value.toString().split(',');
-         subjects.addAll(['Core Mathematics','English Language','Integrated Science','Social Studies']);
+         subjects.addAll(additionalSubjects);
         return ClassesModel(
           id: row[0].toString().toLowerCase().trim().hashCode.toString(),
           classCode: row[0]!.value.toString(),

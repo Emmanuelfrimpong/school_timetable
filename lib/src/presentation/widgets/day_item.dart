@@ -21,6 +21,7 @@ class DayItem extends ConsumerStatefulWidget {
 }
 
 class _DayItemState extends ConsumerState<DayItem> {
+  List<TableModel> data = [];
   List<PeriodModel> section1 = [];
   List<PeriodModel> section2 = [];
   List<PeriodModel> section3 = [];
@@ -28,6 +29,7 @@ class _DayItemState extends ConsumerState<DayItem> {
   PeriodModel? firstBreak;
   PeriodModel? secondBreak;
   Future<List<PeriodModel>> workOnPeriod() async {
+    data= widget.tables;
     var periods = widget.periods;
     if (periods != null) {
       section1 = [];
@@ -83,7 +85,15 @@ class _DayItemState extends ConsumerState<DayItem> {
 
   @override
   Widget build(BuildContext context) {
-      var data = widget.tables;
+      
+      //print monday data 
+      if(widget.day=='Monday'){
+        print('Monday from View========================================');
+        data.forEach((element) {
+          print(element.period);
+        });
+        print('Monday from View End========================================');
+      }
       //data.shuffle();
       return FutureBuilder<List<PeriodModel>>(
           future: workOnPeriod(),
@@ -283,26 +293,32 @@ class _DayItemState extends ConsumerState<DayItem> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [                             
                               if (section1.isNotEmpty)
-                                Column(
-                                  children: data
-                                      .map(
-                                        (venue) => Row(
-                                          children: section1.map((period) {
-                                            var table = widget.tables
-                                                .firstWhereOrNull((element) =>                                                  
-                                                    element.period ==
-                                                        period.period);
-                                            if (table != null) {
-                                              return TableItem(
-                                                table: table,
-                                              );
-                                            } else {
-                                              return const TableItem();
-                                            }
-                                          }).toList(),
-                                        ),
-                                      )
-                                      .toList(),
+                                Builder(
+                                  builder: (context) {
+                                    var newData=data.where((element) => section1.contains(PeriodModel.fromMap(element.periodMap!))).toList();
+                                    return Column(
+                                      children: data.where((element) => section1.contains(PeriodModel.fromMap(element.periodMap!))).toList()
+                                          .map(
+                                            (venue) => Row(
+                                              children: section1.map((period) {
+                                                var table = newData
+                                                    .firstWhereOrNull((element) =>                                                  
+                                                        element.period ==
+                                                            period.period);
+                                                if (table != null) {
+                                                  newData.remove(table);
+                                                  return TableItem(
+                                                    table: table,
+                                                  );
+                                                } else {
+                                                  return const TableItem();
+                                                }
+                                              }).toList(),
+                                            ),
+                                          )
+                                          .toList(),
+                                    );
+                                  }
                                 ),
                               if (firstBreak != null)
                                 SizedBox(
@@ -331,27 +347,33 @@ class _DayItemState extends ConsumerState<DayItem> {
                                   ),
                                 ),
                               if (section2.isNotEmpty)
-                                Column(
-                                  children: data
-                                      .map(
-                                        (venue) => Row(
-                                          children: section2.map((period) {
-                                            var table = widget.tables
-                                                .firstWhereOrNull((element) =>
-                                                   
-                                                    element.period ==
-                                                        period.period);
-                                            if (table != null) {
-                                              return TableItem(
-                                                table: table,
-                                              );
-                                            } else {
-                                              return const TableItem();
-                                            }
-                                          }).toList(),
-                                        ),
-                                      )
-                                      .toList(),
+                                Builder(
+                                  builder: (context) {
+                                     var newData=data.where((element) => section2.contains(PeriodModel.fromMap(element.periodMap!))).toList();
+                                    return Column(
+                                      children: data.where((element) => section2.contains(PeriodModel.fromMap(element.periodMap!))).toList()
+                                          .map(
+                                            (venue) => Row(
+                                              children: section2.map((period) {
+                                                var table = newData
+                                                    .firstWhereOrNull((element) =>
+                                                       
+                                                        element.period ==
+                                                            period.period);
+                                                if (table != null) {
+                                                  newData.remove(table);
+                                                  return TableItem(
+                                                    table: table,
+                                                  );
+                                                } else {
+                                                  return const TableItem();
+                                                }
+                                              }).toList(),
+                                            ),
+                                          )
+                                          .toList(),
+                                    );
+                                  }
                                 ),
                             
                               if (secondBreak != null)
@@ -381,26 +403,32 @@ class _DayItemState extends ConsumerState<DayItem> {
                                   ),
                                 ),
                                if (section3.isNotEmpty)
-                                Column(
-                                  children: data
-                                      .map(
-                                        (venue) => Row(
-                                          children: section3.map((period) {
-                                            var table = widget.tables
-                                                .firstWhereOrNull((element) =>                                                  
-                                                    element.period ==
-                                                        period.period);
-                                            if (table != null) {
-                                              return TableItem(
-                                                table: table,
-                                              );
-                                            } else {
-                                              return const TableItem();
-                                            }
-                                          }).toList(),
-                                        ),
-                                      )
-                                      .toList(),
+                                Builder(
+                                  builder: (context) {
+                                     var newData=data.where((element) => section3.contains(PeriodModel.fromMap(element.periodMap!))).toList();
+                                    return Column(
+                                      children: data.where((element) => section3.contains(PeriodModel.fromMap(element.periodMap!))).toList()
+                                          .map(
+                                            (venue) => Row(
+                                              children: section3.map((period) {
+                                                var table = newData
+                                                    .firstWhereOrNull((element) =>                                                  
+                                                        element.period ==
+                                                            period.period);
+                                                if (table != null) {
+                                                  newData.remove(table);
+                                                  return TableItem(
+                                                    table: table,
+                                                  );
+                                                } else {
+                                                  return const TableItem();
+                                                }
+                                              }).toList(),
+                                            ),
+                                          )
+                                          .toList(),
+                                    );
+                                  }
                                 ),                            
                             ],
                           )

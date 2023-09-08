@@ -7,6 +7,7 @@ import 'package:school_timetable/src/data/models/teacher_class_model.dart';
 import 'package:school_timetable/src/presentation/riverpod/classes_services.dart';
 import 'package:school_timetable/src/presentation/riverpod/teachers_services.dart';
 import 'package:collection/collection.dart';
+import '../../core/constants/additional_subjects.dart';
 import '../../core/constants/classes_constants.dart';
 import '../../data/models/class_teacher_subject_model.dart';
 import '../../data/models/period_day_model.dart';
@@ -41,12 +42,31 @@ class TableListNotifier extends StateNotifier<List<TableModel>> {
     //check and avoid same teacher teaching more than one class at the same time
     //check and avoid same class having more than one subject at the same time
     List<TableModel> tables = createTableItems(TCSP, PDP);
+
+// group table by day and period
+    // var tableGroup = groupBy(tables, (p0) => p0.day);
+    // var  item= tableGroup.keys.where((element) => element=='Monday').toList();
+
+    // print('start===================================================');
+    // print(item);
+    // for (var element in tableGroup[item.first]!) {
+    //   print('${element.period}');
+    // }
+    // print('end===================================================');
+
+    // print tables with day and period
+    // for (var item in tables) {\
+    //   print('${item.className} ${item.subject} ${item.day} ${item.period}');
+    // }
+
     //save tables to hive
     importDataUseCase.saveTables(tables);
     //save periods to hive
     var periods = ref.watch(periodDataProvider);
     importDataUseCase.savePeriods(periods);
     //get tables from hive
+    //print table
+
     getTables();
     CustomDialog.dismiss();
     CustomDialog.showSuccess(
@@ -96,19 +116,37 @@ class TableListNotifier extends StateNotifier<List<TableModel>> {
   List<ClassTecherSubjectModel> getTecherClassSubjectPair(
       List<ClassSubjectModel> csp, List<TeacherClassModel> tcp) {
     var teacherClassSubjectPairs = <ClassTecherSubjectModel>[];
+    var paired = <String>[];
+    var failed = <String>[];
     for (var element in csp) {
-      for (var item in tcp) {
-        if (element.classCode == item.classCode && element.subjectName==item.subjectName) {
-          teacherClassSubjectPairs.add(ClassTecherSubjectModel(
-              classId: element.classId,
-              className: element.className,
-              classCode: element.classCode,
-              subjectName: element.subjectName,
-              subjectCode: element.subjectCode,
-              teacherId: item.teacherId,
-              teacherName: item.teacherName));
-        }
+      var data = tcp
+          .where((item) =>
+              item.classCode!.replaceAll(' ', '').trim().toLowerCase() ==
+                  element.classCode!.replaceAll(' ', '').trim().toLowerCase() &&
+              item.subjectName!.replaceAll(' ', '').trim().toLowerCase() ==
+                  element.subjectName!.replaceAll(' ', '').trim().toLowerCase())
+          .toList();
+      if (data.isNotEmpty) {
+        var item = data.first;
+        teacherClassSubjectPairs.add(ClassTecherSubjectModel(
+          classId: element.classId,
+          className: element.className,
+          classCode: element.classCode,
+          subjectName: element.subjectName,
+          subjectCode: element.subjectCode,
+          teacherId: item.teacherId,
+          teacherName: item.teacherName,
+        ));
+        paired
+            .add('${element.classId}_${element.subjectCode}_${item.teacherId}');
+      } else {
+        failed.add('${element.subjectName}_${element.classCode}');
       }
+    }
+    print('paired: ${paired.length}');
+    print('failed: ${failed.length}');
+    for (var item in failed) {
+      print(item);
     }
     return teacherClassSubjectPairs;
   }
@@ -137,49 +175,94 @@ class TableListNotifier extends StateNotifier<List<TableModel>> {
 
   List<TableModel> createTableItems(
       List<ClassTecherSubjectModel> tcsp, List<PeriodDayModel> pdp) {
-    //time to pair TCSP with PDP
-    //check and avoid same teacher teaching more than one class at the same time
-    //check and avoid same class having more than one subject at the same time
+    //remove friday first and second period
+    // var pdpList = pdp
+    //     .where((element) => !(element.day == 'Friday' &&
+    //         (element.period == 1 || element.period == 2)))
+    //     .toList();
     List<TableModel> tables = [];
-    // group TCSP by classId
-  
-      // randomly a classList to pdp
-      // check if the teacher is not teaching another class at the same time else get  another pdp
-      // check if the class is not having another subject at the same time else get another pdp
-      // if both are true then add to table
-      for (var item in tcsp) {
-        for (var pdpItem in pdp) {
-            tables.add(TableModel(
-              id: '${item.teacherId}_${pdpItem.period}_${pdpItem.day}'
-                  .hashCode
-                  .toString(),
-              classId: item.classId,
-              subject: item.subjectName,
-              className: item.className,
-              programme: '',
-              createdAt: DateTime.now().millisecondsSinceEpoch,
-              classCode: item.classCode,
-              teacherId: item.teacherId,
-              teacherName: item.teacherName,
-              period: pdpItem.period,
-              day: pdpItem.day,
-              periodMap: {
-                'period': pdpItem.period,
-                'periodName': pdpItem.periodName,
-                'startTime': pdpItem.startTime,
-                'endTime': pdpItem.endTime,
-              },
-            ));
-            //remove the pdp from the list
-            //pdpList.remove(pdpItem);
-            break;
-          
+    var classGroup = groupBy(tcsp, (p0) => p0.classId);
+    for (var singleClass in classGroup.keys) {
+      var pdpList = pdp
+          .where((element) => !(element.day == 'Friday' &&
+              (element.period == 1 || element.period == 2)))
+          .toList();
+      //var singleClass = classGroup.keys.first;
+      var singleClassData = classGroup[singleClass];
+      for (int i = 0; i < 2; i++) {
+        for (var item in singleClassData!) {
+          pdpList.shuffle();
+          var pdpItem = pdpList.first;
+          tables.add(TableModel(
+            id: '${item.teacherId}_${pdpItem.period}_${pdpItem.day}'
+                .hashCode
+                .toString(),
+            classId: item.classId,
+            subject: item.subjectName,
+            className: item.className,
+            programme: '',
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            classCode: item.classCode,
+            teacherId: item.teacherId,
+            teacherName: item.teacherName,
+            period: pdpItem.period,
+            day: pdpItem.day,
+            periodMap: {
+              'period': pdpItem.period,
+              'periodName': pdpItem.periodName,
+              'startTime': pdpItem.startTime,
+              'endTime': pdpItem.endTime,
+            },
+          ));
+          pdpList.remove(pdpItem);
         }
-        
       }
+      //check if the class has more than 35 tables
+      //if no, add more tables
+      var classTables2 =
+          tables.where((element) => element.classId == singleClass).toList();
 
-    
-    
+      //get all subjects
+      var allSubjects = classTables2.map((e) => e.subject).toList();
+      //remove additiional subjects
+      var withoutAdditionalSubjects = allSubjects
+          .where((element) => !additionalSubjects.contains(element))
+          .toList();
+      // get class subject pair for each subject
+      var classSubjectPair = singleClassData!
+          .where((element) =>
+              withoutAdditionalSubjects.contains(element.subjectName))
+          .toList();
+      // create 3 tables for each classSubjectPair
+      for (int i = 0; i < 2; i++) {
+        for (var item in classSubjectPair) {
+          pdpList.shuffle();
+          var pdpItem = pdpList.first;
+          tables.add(TableModel(
+            id: '${item.teacherId}_${pdpItem.period}_${pdpItem.day}'
+                .hashCode
+                .toString(),
+            classId: item.classId,
+            subject: item.subjectName,
+            className: item.className,
+            programme: '',
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            classCode: item.classCode,
+            teacherId: item.teacherId,
+            teacherName: item.teacherName,
+            period: pdpItem.period,
+            day: pdpItem.day,
+            periodMap: {
+              'period': pdpItem.period,
+              'periodName': pdpItem.periodName,
+              'startTime': pdpItem.startTime,
+              'endTime': pdpItem.endTime,
+            },
+          ));
+          pdpList.remove(pdpItem);
+        }
+      }
+    }
     return tables;
   }
 }
